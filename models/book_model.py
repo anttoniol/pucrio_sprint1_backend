@@ -1,7 +1,3 @@
-import json
-
-from database.manager import DatabaseManager
-
 class Book:
     def __init__(self, title, author, publication_date, id = None):
         self.__id = id

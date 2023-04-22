@@ -45,11 +45,13 @@ class DatabaseManager:
         success = False
         try:
             self.__cursor.execute(deletion_command)
+            self.__connection.commit()
             success = True
         except sqlite3.Error as error:
             logging.error("Erro ao remover dados da tabela: ", error)
         finally:
             return self.close_connection() and success
+
     def close_connection(self):
         try:
             self.__connection.close()
