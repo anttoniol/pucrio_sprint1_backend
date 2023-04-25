@@ -31,15 +31,17 @@ class DatabaseManager:
             return (search_result, self.close_connection() and success)
 
     def insert_into_table(self, insertion_command):
+        id = None
         success = False
         try:
             self.__cursor.execute(insertion_command)
             self.__connection.commit()
-            success =  True
+            id = self.__cursor.lastrowid
+            success = True
         except sqlite3.Error as error:
             logging.error("Erro ao inserir dados na tabela: ", error)
         finally:
-            return self.close_connection() and success
+            return (id, self.close_connection() and success)
 
     def delete_from_table(self, deletion_command):
         success = False

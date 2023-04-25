@@ -24,11 +24,14 @@ def format_objects(objects):
 
 def create_response(body, status_code):
     headers = {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Methods': 'POST, GET, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': '*'
     }
-    return flask.Response(status = status_code, response = json.dumps(body), headers = headers, mimetype = "application/json")
+    return flask.Response(status = status_code, response = json.dumps(body),
+                          headers = headers, mimetype = "application/json", content_type = "application/json")
 
-@app.get("/book", summary = "Search books", tags = [book_tag])
+@app.get("/book/", summary = "Search books", tags = [book_tag])
 def get_books(query: BookQuery):
     filled_params = query.get_filled_params()
 
@@ -47,12 +50,14 @@ def get_books(query: BookQuery):
         return create_response(body, 200)
     return create_response(body, 500)
 
-@app.post("/book", summary = "Save a book", tags = [book_tag])
+@app.post("/book/", summary = "Save a book", tags = [book_tag])
 def save_book(body: BookBody):
-    success = book_service.save_book(body.dict())
+    result = book_service.save_book(body.dict())
+    success = result[1]
 
     if success:
-        body = {"mensagem": "Livro salvo com sucesso!"}
+        id = result[0]
+        body = {"mensagem": "Livro salvo com sucesso!", "id": id}
         return create_response(body, 200)
     body = {"mensagem": "Erro ao salvar livro!"}
     return create_response(body, 500)
@@ -70,4 +75,4 @@ def delete_book(path: BookPath):
 
 if __name__ == '__main__':
     initialize_database()
-    app.run(host = '127.0.0.1', port = 5000)
+    app.run(host = 'localhost', port = 5000)
