@@ -1,6 +1,8 @@
-# PUC-Rio: Especialização em Engenharia de Software, sprint 1
+# PUC-Rio: Especialização em Engenharia de Software
 
-## Instruções de uso
+## Sprint 1
+
+### Instruções de uso
 
 1. Clonar o repositório
 2. Pelo terminal, acessar a pasta do repositório
